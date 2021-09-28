@@ -1,0 +1,71 @@
+.widgets, .controls,
+.controls-btn,
+.controls .controls-label {
+  display: flex;
+}
+
+.controls-btn,
+.controls .controls-label {
+  flex-flow: row nowrap;
+}
+
+.widgets, .widget-calendar,
+.controls {
+  flex-flow: column;
+}
+
+.widget-calendar, .controls {
+  align-items: stretch;
+}
+
+.days, .weeks {
+  display: grid;
+}
+
+.controls .controls-label,
+.controls-btn {
+  justify-content: space-around;
+}
+
+.day, .week {
+  text-align: center;
+}
+
+.controls {
+  padding: 20px 0;
+}
+
+.controls .controls-label {
+  margin-top: 20px;
+}
+
+.days, .weeks {
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.week, .day {
+  padding: 5px 0;
+  margin: 0.5px;
+  border: 1px solid silver;
+}
+
+.week {
+  cursor: pointer;
+}
+
+.week:hover {
+  color: #065ebb;
+  text-shadow: 0 -1px 1em #065ebb;
+}
+
+.widget-calendar {
+  background: #80f8ff;
+  border: 1px solid silver;
+  flex-grow: 1;
+}
+
+.day:nth-child(7n - 1),
+.day:nth-child(7n) {
+  color: red;
+  font-weight: bold;
+}
