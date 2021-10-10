@@ -6,8 +6,8 @@ export const ThemeContextExample = () => {
 
   return (
    <div className="controls-label">
-     <h3 style={{color: themeContext.theme1}}>Theme 1</h3>
-     <h3 style={{color: themeContext.theme2}}>Theme 2</h3>
+     <h3 style={{color: themeContext.theme1}}>Тема таблицы</h3>
+     <h3 style={{color: themeContext.theme2}}>Тема текста</h3>
    </div>
   )
 };
