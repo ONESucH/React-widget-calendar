@@ -35,32 +35,25 @@ const App = () => {
     theme1: 'red',
     theme2: 'blue',
   });
-  const [ monthCounter, setMonthCounter ] = useState(0);
+  const [ monthCounter, setMonthCounter ] = useState(0); // Количество месяцев в году
   const [ years, setYears ] = useState([]); // Формируем год
   const [ month, setMonth ] = useState(null); // Формируем в году месяцы
-  const date = new Date(); // Получаем текущую дату
 
-  const getMonday = () => {
-    const now = new Date();
-    return new Date(now.getFullYear(), monthCounter - 1, now.getDate() + (8 - now.getDay()));
-  };
+  const getLeftPosition = (monthDays) => Array.from(
+    { length: new Date(new Date().getFullYear(), monthCounter, 0).getDay() },
+    (v, k) => monthDays - k).reverse();
 
   useEffect(() => {
     if (monthCounter > 11) return;
 
-    // Предыдущий месяц
-    const left = new Date(date.getFullYear() - 1, 11, 31);
-    const countWeekForMount = Math.ceil((date.getDate() + monthCounter) / 7); // Количество недель в месяце
-    // ----------------
-    const monthDays = 33 - new Date(date.getFullYear(), monthCounter, 33).getDate(); // Количество дней в месяце
-    const dontActiveDays = 42 - monthDays; // Количество всех неактивных дней в месяце
+    const monthDays = new Date(new Date().getFullYear(), monthCounter + 1, 0).getDate(); // Количество дней в месяце
 
     setMonth({
       indexMount: monthCounter,
       month: MonthRU[monthCounter],
       monthDays,
       days: Array.from({ length: monthDays }, (v, k) => k + 1),
-      left: getMonday()
+      leftPosition: getLeftPosition(monthDays)
     });
 
     setMonthCounter(monthCounter + 1);
@@ -105,14 +98,19 @@ const App = () => {
                     {WeeksRu.map((item, weeksIndex) => <div className="week" key={weeksIndex + item}>{item}</div>)}
                   </div>
                   <div className="days">
-                    {item?.days ? item?.days.map(day => (
+                    {item?.leftPosition.map(day => (
+                      <div key={day} className="day no-active">
+                        {day}
+                      </div>
+                    ))}
+                    {item?.days.map(day => (
                       <div
                         key={day}
-                        className={`day ${(date.getMonth() === item.indexMount) && (day === date.getDate()) ? 'now-date' : null}`}
+                        className={`day ${(new Date().getMonth() === item.indexMount) && (day === new Date().getDate()) ? 'now-date' : null}`}
                       >
                         {day}
                       </div>
-                    )) : null}
+                    ))}
                   </div>
                 </div>
               ))
