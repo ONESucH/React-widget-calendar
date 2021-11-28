@@ -40,6 +40,11 @@ const App = () => {
   const [ month, setMonth ] = useState(null); // Формируем в году месяцы
   const date = new Date(); // Получаем текущую дату
 
+  const getMonday = () => {
+    const now = new Date();
+    return new Date(now.getFullYear(), monthCounter - 1, now.getDate() + (8 - now.getDay()));
+  };
+
   useEffect(() => {
     if (monthCounter > 11) return;
 
@@ -51,9 +56,11 @@ const App = () => {
     const dontActiveDays = 42 - monthDays; // Количество всех неактивных дней в месяце
 
     setMonth({
+      indexMount: monthCounter,
       month: MonthRU[monthCounter],
       monthDays,
-      days: Array.from({ length: monthDays }, (v, k) => k + 1)
+      days: Array.from({ length: monthDays }, (v, k) => k + 1),
+      left: getMonday()
     });
 
     setMonthCounter(monthCounter + 1);
@@ -98,8 +105,13 @@ const App = () => {
                     {WeeksRu.map((item, weeksIndex) => <div className="week" key={weeksIndex + item}>{item}</div>)}
                   </div>
                   <div className="days">
-                    {item?.days ? item?.days.map((day, dayIndex) => (
-                      <div className="day" key={dayIndex}>{day}</div>
+                    {item?.days ? item?.days.map(day => (
+                      <div
+                        key={day}
+                        className={`day ${(date.getMonth() === item.indexMount) && (day === date.getDate()) ? 'now-date' : null}`}
+                      >
+                        {day}
+                      </div>
                     )) : null}
                   </div>
                 </div>
