@@ -20,6 +20,8 @@
 
 .days, .weeks, .month, .years {
   display: grid;
+  align-items: flex-start;
+  justify-content: stretch;
 }
 
 .controls .controls-label,
