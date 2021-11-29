@@ -32,8 +32,8 @@ const WeeksRu = [
 
 const App = () => {
   const [ colors, setColors ] = useState({
-    theme1: 'red',
-    theme2: 'blue',
+    theme1: 'silver',
+    theme2: 'black',
   });
   const [ monthCounter, setMonthCounter ] = useState(0); // Количество месяцев в году
   const [ years, setYears ] = useState([]); // Формируем год
@@ -99,21 +99,28 @@ const App = () => {
             {years?.length ? (
               years.map((item, monthIndex) => (
                 <div className="month" key={monthIndex}>
-                  <div className="month-title">{item?.month}</div>
+                  <div className="month-title" style={{color: colors.theme2}}>{item?.month}</div>
                   <div className="weeks">
-                    {WeeksRu.map((item, weeksIndex) => <div className="week" key={weeksIndex + item}>{item}</div>)}
+                    {WeeksRu.map((item, weeksIndex) => (
+                      <div className="week" style={{borderColor: colors.theme1}} key={weeksIndex + item}>
+                    ){item}</div>))}
                   </div>
                   <div className="days">
-                    {item?.leftPosition.map(day => <div key={day} className="day no-active">{day}</div>)}
+                    {item?.leftPosition.map(day => (
+                      <div key={day} className="day no-active" style={{borderColor: colors.theme1}}>{day}</div>
+                    ))}
                     {item?.days.map(day => (
                       <div
                         key={day}
-                        className={`day ${(date.getMonth() === item.indexMount) && (day === date.getDate()) ? 'now-date' : null}`}
+                        style={{borderColor: colors.theme1}}
+                        className={`day ${(date.getMonth() === item.indexMount) && (day === date.getDate()) ? 'now-date' : ''}`}
                       >
                         {day}
                       </div>
                     ))}
-                    {item?.rightPosition.map(day => <div key={day} className="day no-active">{day}</div>)}
+                    {item?.rightPosition.map(day => (
+                      <div key={day} className="day no-active" style={{borderColor: colors.theme1}}>{day}</div>
+                    ))}
                   </div>
                 </div>
               ))
