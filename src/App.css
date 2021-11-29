@@ -85,9 +85,15 @@
   flex-grow: 1;
 }
 
-.day:nth-child(7n - 1),
-.day:nth-child(7n) {
+.day:not(.no-active):nth-child(7n - 1),
+.day:not(.no-active):nth-child(7n) {
   color: red;
+  font-weight: bold;
+}
+
+.day.no-active:nth-child(7n - 1),
+.day.no-active:nth-child(7n) {
+  color: #001dfb;
   font-weight: bold;
 }
 

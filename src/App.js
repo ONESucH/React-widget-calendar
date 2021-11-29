@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { ThemeContext } from './utils';
 import { ThemeContextExample } from './components';
 import './App.css';
@@ -38,22 +38,28 @@ const App = () => {
   const [ monthCounter, setMonthCounter ] = useState(0); // Количество месяцев в году
   const [ years, setYears ] = useState([]); // Формируем год
   const [ month, setMonth ] = useState(null); // Формируем в году месяцы
+  let date = useMemo(() => new Date());
 
   const getLeftPosition = (monthDays) => Array.from(
-    { length: new Date(new Date().getFullYear(), monthCounter, 0).getDay() },
+    { length: new Date(date.getFullYear(), monthCounter, 0).getDay() },
     (v, k) => monthDays - k).reverse();
+
+  const getRightPosition = (monthDays) => Array.from(
+    { length: (6 * 7) - getLeftPosition(monthDays).length - monthDays  },
+    (v, k) => k + 1);
 
   useEffect(() => {
     if (monthCounter > 11) return;
 
-    const monthDays = new Date(new Date().getFullYear(), monthCounter + 1, 0).getDate(); // Количество дней в месяце
+    const monthDays = new Date(date.getFullYear(), monthCounter + 1, 0).getDate(); // Количество дней в месяце
 
     setMonth({
       indexMount: monthCounter,
       month: MonthRU[monthCounter],
       monthDays,
       days: Array.from({ length: monthDays }, (v, k) => k + 1),
-      leftPosition: getLeftPosition(monthDays)
+      leftPosition: getLeftPosition(monthDays),
+      rightPosition: getRightPosition(monthDays)
     });
 
     setMonthCounter(monthCounter + 1);
@@ -98,19 +104,16 @@ const App = () => {
                     {WeeksRu.map((item, weeksIndex) => <div className="week" key={weeksIndex + item}>{item}</div>)}
                   </div>
                   <div className="days">
-                    {item?.leftPosition.map(day => (
-                      <div key={day} className="day no-active">
-                        {day}
-                      </div>
-                    ))}
+                    {item?.leftPosition.map(day => <div key={day} className="day no-active">{day}</div>)}
                     {item?.days.map(day => (
                       <div
                         key={day}
-                        className={`day ${(new Date().getMonth() === item.indexMount) && (day === new Date().getDate()) ? 'now-date' : null}`}
+                        className={`day ${(date.getMonth() === item.indexMount) && (day === date.getDate()) ? 'now-date' : null}`}
                       >
                         {day}
                       </div>
                     ))}
+                    {item?.rightPosition.map(day => <div key={day} className="day no-active">{day}</div>)}
                   </div>
                 </div>
               ))
