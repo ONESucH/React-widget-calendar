@@ -102,8 +102,8 @@ const App = () => {
                   <div className="month-title" style={{color: colors.theme2}}>{item?.month}</div>
                   <div className="weeks">
                     {WeeksRu.map((item, weeksIndex) => (
-                      <div className="week" style={{borderColor: colors.theme1}} key={weeksIndex + item}>
-                    ){item}</div>))}
+                      <div className="week" style={{borderColor: colors.theme1}} key={weeksIndex + item}>{item}</div>
+                    ))}
                   </div>
                   <div className="days">
                     {item?.leftPosition.map(day => (
