@@ -1,11 +1,13 @@
 .widgets, .controls,
 .controls-btn,
-.controls .controls-label {
+.controls .controls-label,
+.calendar-controls, .calendar-data {
   display: flex;
 }
 
 .controls-btn,
-.controls .controls-label {
+.controls .controls-label,
+.calendar-controls, .calendar-data {
   flex-flow: row nowrap;
 }
 
@@ -16,6 +18,14 @@
 
 .widget-calendar, .controls {
   align-items: stretch;
+}
+
+.calendar-controls {
+  justify-content: center;
+}
+
+.calendar-controls, .calendar-data {
+  align-items: center;
 }
 
 .days, .weeks, .month, .years {
@@ -39,6 +49,10 @@
 
 .controls .controls-label {
   margin-top: 20px;
+}
+
+.calendar-data span {
+  font-size: 1.3em;
 }
 
 .years {
@@ -77,6 +91,11 @@
 .week:hover {
   color: #065ebb;
   text-shadow: 0 -1px 1em #065ebb;
+}
+
+.calendar-btn {
+  margin:  0 5px;
+  cursor: pointer;
 }
 
 .widget-calendar {

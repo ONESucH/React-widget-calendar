@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { ThemeContext } from './utils';
 import { ThemeContextExample } from './components';
 import './App.css';
@@ -38,7 +38,7 @@ const App = () => {
   const [ monthCounter, setMonthCounter ] = useState(0); // Количество месяцев в году
   const [ years, setYears ] = useState([]); // Формируем год
   const [ month, setMonth ] = useState(null); // Формируем в году месяцы
-  let date = useMemo(() => new Date());
+  const [ date, setDate ] = useState(new Date());
 
   const getLeftPosition = (monthDays) => Array.from(
     { length: new Date(date.getFullYear(), monthCounter, 0).getDay() },
@@ -47,6 +47,11 @@ const App = () => {
   const getRightPosition = (monthDays) => Array.from(
     { length: (6 * 7) - getLeftPosition(monthDays).length - monthDays  },
     (v, k) => k + 1);
+
+  useEffect(() => {
+    setMonthCounter(0);
+    setYears([]);
+  }, [ date ]);
 
   useEffect(() => {
     if (monthCounter > 11) return;
@@ -63,7 +68,7 @@ const App = () => {
     });
 
     setMonthCounter(monthCounter + 1);
-  }, [ monthCounter ]);
+  }, [ monthCounter, date ]);
 
   useEffect(() => {
     if (!month) return;
@@ -91,6 +96,23 @@ const App = () => {
         </div>
 
         <ThemeContextExample />
+
+        <div className="calendar-controls">
+          <div className="calendar-data">
+            <span>{date.getDate()} {MonthRU[date.getMonth()]}</span>
+            <div
+              className="calendar-btn fas fa-chevron-left"
+              onClick={() => setDate(new Date(date.getFullYear() - 1, date.getMonth(), date.getDate()))}
+              title="Назад"
+            />
+            <span>{date.getFullYear()}</span>
+          </div>
+          <div
+            className="calendar-btn fas fa-chevron-right"
+            onClick={() => setDate(new Date(date.getFullYear() + 1, date.getMonth(), date.getDate()))}
+            title="Вперед"
+          />
+        </div>
       </div>
 
       <div className="widgets">
@@ -113,7 +135,7 @@ const App = () => {
                       <div
                         key={day}
                         style={{borderColor: colors.theme1}}
-                        className={`day ${(date.getMonth() === item.indexMount) && (day === date.getDate()) ? 'now-date' : ''}`}
+                        className={`day ${(date.getMonth() === item.indexMount) && (day === date.getDate() && date.getFullYear() === new Date().getFullYear()) ? 'now-date' : ''}`}
                       >
                         {day}
                       </div>
